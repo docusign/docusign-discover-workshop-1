@@ -1,0 +1,91 @@
+{
+    "name": "Bank Account Opening",
+    "description": {
+        "short": "App for Bank Account Opening",
+        "long": "This app is designed to allow users to open bank accounts using connected fields extensions"
+    },
+    "termsOfServiceUrl": "https://www.johndoe.com/tos",
+    "privacyUrl": "https://www.johndoe.com/privacy-security",
+    "supportUrl": "https://www.johndoe.com/support",
+    "publisher": {
+        "name": "John Doe",
+        "email": "john.doe@gmail.com",
+        "phone": "800-867-5309",
+        "website": "https://www.johndoe.com"
+    },
+    "connections": [
+        {
+            "name": "authentication",
+            "description": "Secure connection to the connected fields proxy",
+            "type": "oauth2",
+            "params": {
+                "provider": "CUSTOM",
+                "clientId": "<CLIENT_ID>",
+                "clientSecret": "<CLIENT_SECRET>",
+                "scopes": [],
+                "customConfig": {
+                    "authorizationMethod": "header",
+                    "authorizationParams": {
+                        "prompt": "consent",
+                        "access_type": "offline"
+                    },
+                    "authorizationUrl": "<PROXY_BASE_URL>/api/oauth/authorize",
+                    "requiredScopes": [],
+                    "scopeSeparator": " ",
+                    "tokenUrl": "<PROXY_BASE_URL>/api/oauth/token",
+                    "refreshScopes": []
+                }
+            }
+        }
+    ],
+    "icon": {
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAABQVBMVEUAAAD/AACAAP//gID/VVX/Zmb/SUn/VVX/XV3/VVVLAP//S0v/UVFOAP//Tk7/VVX/UFD/VVX/U1P/UVGTIKb/U1NPAP//U1P/UFBLAP+HG7n/UVH/VFT/UVH/UVH/U1P/UVH/U1P/UVH/U1P/UlL/UVH/U1NNAP//UVH/UVH/UVFNAP//UlL/UlL/UlL/UlJLAP//UlL/UlL/U1MTAD5KGBheHx9HFhZGFhZFFhb/UlJMGRk+ExNNGBg8ExP/UlL/UlJAFBT/U1P/UlL/U1P/UlL/UlL/UlL/UlLZRkb/UlL/UlL/UlL/UlJDAOLiSUn/UlL/UlJEAOf/U1NGAO3/UlL/UVFHAPH/UlL/UlLxTU1MAP//UlIAAABMAP//UlL/UlJMAP8AAAD/UlL/UlIAAABMAP/9UVH+UlL/UlL///8T+Es2AAAAZXRSTlMAAQICAwUHCQsMEREWGhoeICQlJigoKiswM0JCRkhVVlhiZWlqd3h7h4qNj5OcoqWprK+2wMDAwcLDxMXIyMnKy8zMzc/T1tfd4uLk5ebo6Onq6+7v7/Hz8/T19vf5+fn6+/z8/hoS1SAAAAABYktHRGolYpUOAAABQElEQVRYw+3Wx1YCQRBG4TJjxBwxY8CAOWfBnBXMCqI1Wu//Am5cyDQ9Pe2/cTF339+qTlUTKU1kRNPD5VZ8sJEMVYuhRLTCE6gTY2fREgwQWW0AAbmJgIC894GAZLtBQNJNICDJMhCQIRS4rwEBiaFAOgQC0o8CcyjwXAkC0kXFrR35dR65e/QAhmnacXXO7nKLemCK3swA84J+MZDjB+A1HXDsE+Al3Sj5BXhZsxV8A7zyBQK8Xki4tQB4p4BwagPw5qcCbFsBvKEAs3ZATpnqUTuAL9xADwqEQeCAQGAMBdpBYJdAoBcE9kpBIEIYMEkYsB/CgKuff9ZfgZM2goBEPSFANlZOWiBlBDLxll+3VAGc+RcP4ONwZiD/Y+N4dJdydd1cpFxzx6paCoAACIB/CzxZAVUqMGIhvI6r778B8fsX3rztq9YAAAAASUVORK5CYII=",
+        "mediaType": "image/png"
+    },
+    "screenshots": [],
+    "extensions": [
+        {
+            "name": "My Connected Fields Extension",
+            "description": "Used to verify and autofill agreements with custom data models",
+            "template": "ConnectedFields.Version1.ConnectedFields",
+            "actionReferences": [
+                "My Verify Action",
+                "My GetTypeNames Action",
+                "My GetTypeDefinitions Action"
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "My Verify Action",
+            "description": "This is a description of my verify action",
+            "template": "ConnectedFields.Version1.Verify",
+            "connectionsReference": "authentication",
+            "params": {
+                "uri": "<PROXY_BASE_URL>/api/connectedfields/verify"
+            }
+        },
+        {
+            "name": "My GetTypeNames Action",
+            "description": "This is a description of my GetTypeNames action",
+            "template": "DataIO.Version6.GetTypeNames",
+            "connectionsReference": "authentication",
+            "params": {
+                "uri": "<PROXY_BASE_URL>/api/connectedfields/getTypeNames"
+            }
+        },
+        {
+            "name": "My GetTypeDefinitions Action",
+            "description": "This is a description of my GetTypeDefinitions action",
+            "template": "DataIO.Version6.GetTypeDefinitions",
+            "connectionsReference": "authentication",
+            "params": {
+                "uri": "<PROXY_BASE_URL>/api/connectedfields/getTypeDefinitions"
+            }
+        }
+    ],
+    "publicationRegions": [
+        "US"
+    ],
+    "distribution": "PUBLIC"
+}
