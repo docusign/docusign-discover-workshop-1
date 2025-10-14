@@ -10,7 +10,7 @@ To test this reference implementation, modify the `manifest.json` file.
 ### 1. Clone the repository
 Run the following command to clone the repository: 
 ```bash
-git clone https://github.com/docusign/extension-app-connected-fields-reference-implementation.git
+git clone https://github.com/docusign/docusign-discover-workshop-1.git
 ```
 
 ### 2. Generate secret values
@@ -36,7 +36,6 @@ Run the following command to install the necessary dependencies:
 npm install
 ```
 ### 6. Running the proxy server
-#### Development mode:
 Start the proxy server in development mode by running the command:
 ```bash
 npm run dev
@@ -44,14 +43,6 @@ npm run dev
 
 This will create a local server on the port in the `development.env` file (port 3000 by default) that listens for local changes that trigger a rebuild.
 
-#### Production mode:
-Start the proxy server in production mode by running the following commands:
-```bash
-npm run build
-npm run start
-```
-
-This will start a production build on the port in the `production.env` file (port 3000 by default). 
 ## Setting up ngrok
 ### 1. [Install and configure ngrok for your machine.](https://ngrok.com/docs/getting-started/)
 ### 2. Start ngrok
@@ -138,18 +129,21 @@ Then the Verify request body would be:
 ```
 {
   "typeName": "BankAccountOpening",
-  "idempotencyKey": "mock-1",
+  "idempotencyKey": "mock-bank-open-001",
   "data": {
+    "routingNumber": "111000025",
     "accountNumber": "1234567890",
-    "accountType": "checking",
-    "routingNumber": "111000025"
+    "accountHolderName": "John Doe",
+    "bankName": "Bank of America"
   }
 }
 ```
 
 
-Running the Verify test with the example request body above should return the following properties in the terminal in VS Code:
+Running the Verify test with the example request body above should return the following properties in the response:
 ```
-verifyBankAccount result: { matched: true } type: object
-POST /api/connectedfields/verify 200 4.265 ms - 16
+{
+"verified":true
+"verifyResponseMessage":"Verification succeeded"
+}
 ```
