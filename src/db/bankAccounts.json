@@ -3,6 +3,7 @@
     "id": "1",
     "routingNumber": "111000025",
     "accountNumber": "1234567890",
+    "accountType": "checking",
     "accountHolderName": "John Doe",
     "bankName": "Bank of America",
     "status": "active"
@@ -11,6 +12,7 @@
     "id": "2",
     "routingNumber": "222000111",
     "accountNumber": "9876543210",
+    "accountType": "savings",
     "accountHolderName": "Jane Smith",
     "bankName": "Chase Bank",
     "status": "blocked"
@@ -19,6 +21,7 @@
     "id": "3",
     "routingNumber": "333123456",
     "accountNumber": "5556667777",
+    "accountType": "checking",
     "accountHolderName": "Robert Brown",
     "bankName": "Wells Fargo",
     "status": "existing"
@@ -27,6 +30,7 @@
     "id": "4",
     "routingNumber": "444987654",
     "accountNumber": "1122334455",
+    "accountType": "checking",
     "accountHolderName": "Emily Johnson",
     "bankName": "CitiBank",
     "status": "active"

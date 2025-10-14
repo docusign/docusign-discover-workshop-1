@@ -1,10 +1,13 @@
 import fs from "fs";
 import path from "path";
 
+export type AccountType = "checking" | "savings";
+
 export interface BankAccountRecord {
   id: string;
   routingNumber: string;
   accountNumber: string;
+  accountType: AccountType;
   accountHolderName: string;
   bankName: string;
   status?: "active" | "blocked" | "existing";
@@ -19,7 +22,6 @@ let bankAccounts: BankAccountRecord[] = [];
     const raw = fs.readFileSync(JSON_PATH, "utf-8");
     bankAccounts = JSON.parse(raw) as BankAccountRecord[];
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("Failed to load bankAccounts.json:", err);
     bankAccounts = [];
   }
@@ -27,7 +29,7 @@ let bankAccounts: BankAccountRecord[] = [];
 
 export const getBankAccounts = (): BankAccountRecord[] => bankAccounts;
 
-export const findByAccount = (
+export const findByRoutingAccount = (
   routingNumber: string,
   accountNumber: string
 ): BankAccountRecord | undefined => {
@@ -37,7 +39,7 @@ export const findByAccount = (
   );
 };
 
-export const findByFull = (
+export const findByOpeningFull = (
   routingNumber: string,
   accountNumber: string,
   accountHolderName: string,

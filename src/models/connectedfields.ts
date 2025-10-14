@@ -73,6 +73,20 @@ export type GetTypeDefinitionsResponse = {
   errors?: GetTypeDefinitionsError[];
 };
 
+export type TypeField = {
+  name: string;
+  dataType: string;
+};
+
+export type TypeDefinition = {
+  typeName: string;
+  fields: TypeField[];
+};
+
+export type GetTypeDefinitionsRecordResponse = {
+  typeDefinitions: TypeDefinition[];
+};
+
 export type VerifyBody = {
   /**
    * The type name of the record that is being verified which can be retrieved using the GetTypeNames action.
