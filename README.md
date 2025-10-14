@@ -25,7 +25,6 @@ You will need values for `JWT_SECRET_KEY`, `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECR
 
 ### 3. Set the environment variables for the cloned repository
 - If you're running this in a development environment, create a copy of `example.development.env` and save it as `development.env`.
-- If you're running this in a production environment, create a copy of `example.production.env` and save it as `production.env`.
 - Replace `JWT_SECRET_KEY`, `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, and `AUTHORIZATION_CODE` in `development.env` or `production.env` with your generated values. These values will be used to configure the sample proxy's mock authentication server. 
 - Set the `clientId` value in the manifest file to the same value as `OAUTH_CLIENT_ID`.
 - Set the `clientSecret` value in the manifest file to the same value as `OAUTH_CLIENT_SECRET`.
@@ -57,11 +56,7 @@ Replace `<PORT>` with the port number in the `development.env` or `production.en
 ### 3. Save the forwarding address
 Copy the `Forwarding` address from the response. You’ll need this address in your manifest file.
 
-```bash
-ngrok                                                    
-
-Send your ngrok traffic logs to Datadog: https://ngrok.com/blog-post/datadog-log
-
+```bash                                                    
 Session Status                online
 Account                       email@domain.com (Plan: Free)
 Update                        update available (version 3.3.1, Ctrl-U to update)
