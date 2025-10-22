@@ -153,7 +153,7 @@ app.get("/trigger", async (req, res) => {
       triggerInputs,
     };
 
-    // ========================== TASK 2 end =========================
+    // ========================== TASK 1 end =========================
 
     // Debugging helper - uncomment to verify values
     // console.log("Workflow ID:", workflowId);
