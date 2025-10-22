@@ -6,7 +6,8 @@
     "copy-files": "cpx './src/**/*.cto' 'dist' && cpx './src/db/*.csv' 'dist/db'",
     "lint": "npx eslint --ext .ts src/",
     "start": "node ./dist --env=production",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "trigger": "node server.js"
   },
   "nodemonConfig": {
     "watch": [
@@ -17,6 +18,7 @@
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "dependencies": {
+    "@docusign/iam-sdk": "^1.0.0-beta.3",
     "@accordproject/concerto-cli": "^3.16.6",
     "@accordproject/concerto-core": "~3.19.6",
     "@accordproject/concerto-types": "~3.19.6",
@@ -24,6 +26,7 @@
     "csv-parse": "^5.6.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "express-async-errors": "^3.1.1",
     "express-jwt": "^8.4.1",
     "express-validator": "^7.0.1",
