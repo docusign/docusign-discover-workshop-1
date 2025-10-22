@@ -1,5 +1,5 @@
 {
-  "name": "extension-app-connected-fields-reference-implementation",
+  "name": "discover-workshop-bank-draft",
   "version": "1.0.0",
   "scripts": {
     "build": "tsc --build tsconfig.json && npm run copy-files",
