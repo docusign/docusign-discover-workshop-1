@@ -1,5 +1,7 @@
 'use strict';
 
+// Rename this to server.js after you've completed the workshop to see the full version.
+
 const express = require('express');
 const axios = require('axios');
 const session = require('express-session');
@@ -136,43 +138,36 @@ app.get("/trigger", async (req, res) => {
 
     const client = new iam.IamClient({ accessToken: token });
 
-    // ========================== TASK 1 =========================
-    // Make an API call to retrieve workflow trigger requirements
-    // The endpoint is: GET /v2.1/accounts/{accountId}/maestro/workflows/{workflowId}/triggerRequirements
-    // client.maestro.workflows.getWorkflowTriggerRequirements
+    // Retrieve trigger requirements
+    // Comment this out if you don't want to fetch requirements first
+    const requirements = await client.maestro.workflows.getWorkflowTriggerRequirements({
+      accountId,
+      workflowId,
+    });
 
+    console.log("Trigger Requirements:");
+    console.log(JSON.stringify(requirements, null, 2));
+    // End retrieve trigger requirements
 
     const triggerInputs = {
-      // Trigger requirements key-value pairs go here
-      // e.g., "inputName": "inputValue"
+      startDate: "2024-10-30",
     };
 
-    // Name your instance
     const triggerWorkflowPayload = {
-      instanceName: "<NAME ME PLZ>",
+      instanceName: "Raileen's Super Cool Workflow",
       triggerInputs,
     };
-
-    // ========================== TASK 2 end =========================
 
     // Debugging helper - uncomment to verify values
     // console.log("Workflow ID:", workflowId);
     // console.log("Trigger inputs:", JSON.stringify(triggerWorkflowPayload, null, 2));
 
-    // ========================== TASK 2 ==========================
     // Call the Maestro triggerWorkflow API via the SDK
-    // client.maestro.workflows.triggerWorkflow
-
-
-
-
-
-
-
-
-
-    //========================== TASK 2 end =========================
-
+    const result = await client.maestro.workflows.triggerWorkflow({
+      accountId,
+      workflowId,
+      triggerWorkflow: triggerWorkflowPayload,
+    });
 
     // Debugging helper -uncomment to verify response
     // console.log("Response: ");
@@ -183,21 +178,19 @@ app.get("/trigger", async (req, res) => {
     res
       .status(200)
       .type("html")
-
-      // ========================== TASK 3 ==========================
-      // Display the instanceUrl as a clickable link and embedded iframe
       .send(`
         <h2>Workflow Instance Triggered! Yay!</h2><pre>${JSON.stringify(result, null, 2)}</pre>
-
-
-
-
+        <p><strong>Instance URL:</strong> <a href="${instanceUrl}" target="_blank">${instanceUrl}</a></p>
+        <iframe 
+          src="${instanceUrl}" 
+          width="100%" 
+          height="800px" 
+          style="border:1px solid #ccc; border-radius:8px;">
+        </iframe>
     <hr>
     <h3>Full Response</h3>
     <pre>${JSON.stringify(result, null, 2)}</pre>
         `);
-
-      // ========================== TASK 3 end ==========================
 
   } catch (err) {
     console.error("Failed to trigger workflow:");
