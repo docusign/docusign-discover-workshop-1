@@ -1,0 +1,9 @@
+DS_CLIENT_ID=3a14ae05-b3e0-4646-80c6-94a7d7ab8513
+DS_CLIENT_SECRET=c6d1e39d-4f0e-4d04-9d3d-50d3fcc40b2e
+DS_REDIRECT_URI=http://localhost:4000/callback
+DS_ACCOUNT_ID=8967c91a-288f-451b-9fbf-a5a65bc96333
+DS_AUTH_SERVER=https://account-d.docusign.com
+DS_API_BASE_PATH=https://api-d.docusign.com/v1
+MAESTRO_WORKFLOW_ID=4851c6da-a9f7-42d5-953b-fa7fb015416a
+PORT=4000
+SESSION_SECRET=discover
