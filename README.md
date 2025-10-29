@@ -336,7 +336,7 @@ Response:
 6. Envelope Types → Select "Other" → input "Charge Authorization".
 7. Switch to "Custom Fields" → "App Fields" → expand your uploaded app (e.g., "Bank Account Opening").
 8. Drag the app fields (Account Holder Name, Account Number, Bank Name, Routing Number) onto the PDF. Size and place as required.
-9. For each field, enable "Must verify to sign" under Data Verification and set Data Label appropriately.
+9. For each field, enable "Must verify to sign" under Data Verification. Also look at the `Data Label` setting and replace the long `com.docusign.connecteddata...` string with something more useful, e.g. `accountNumber`
 10. Add standard fields: Signature and Date Signed.
 11. Save and Close; the template appears under "My Templates".
 
