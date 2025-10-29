@@ -34,5 +34,14 @@
     "accountHolderName": "Emily Johnson",
     "bankName": "CitiBank",
     "status": "active"
+  },
+  {
+    "id": "5",
+    "routingNumber": "443980657",
+    "accountNumber": "1122334444",
+    "accountType": "checking",
+    "accountHolderName": "Discover Workshop",
+    "bankName": "CitiBank",
+    "status": "active"
   }
 ]
