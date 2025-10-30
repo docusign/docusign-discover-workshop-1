@@ -376,11 +376,11 @@ Open `server.js` and find the `/trigger` route. Three tasks:
 - TASK 3 — Show the instance URL and embed it in an iframe
 
 Helpful resources:
-- Maestro code example (sample code for finding trigger requirements, triggering the workflow, and embedding)
-- API: getWorkflowTriggerRequirements
-- API: triggerWorkflow
+- Maestro code example (sample code for finding trigger requirements, triggering the workflow, and embedding): https://developers.docusign.com/docs/maestro-api/how-to/trigger-workflow/
+- API: getWorkflowTriggerRequirements: https://developers.docusign.com/docs/maestro-api/reference/maestro/workflows/getworkflowtriggerrequirements/
+- API: triggerWorkflow: https://developers.docusign.com/docs/maestro-api/reference/maestro/workflows/triggerworkflow/
 
-Hint: Pay attention to required fields for the request body.
+Hint: Pay attention to the required fields for the request body.
 
 ---
 
