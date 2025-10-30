@@ -139,7 +139,14 @@ app.get("/trigger", async (req, res) => {
     // ========================== TASK 1 =========================
     // Make an API call to retrieve workflow trigger requirements
     // The endpoint is: GET /v2.1/accounts/{accountId}/maestro/workflows/{workflowId}/triggerRequirements
-    // client.maestro.workflows.getWorkflowTriggerRequirements
+    // SDK method: client.maestro.workflows.getWorkflowTriggerRequirements
+    // See code example here: https://developers.docusign.com/docs/maestro-api/how-to/trigger-workflow/
+    // Corresponds to step 3 + 4
+    // API Ref: https://developers.docusign.com/docs/maestro-api/reference/maestro/workflows/getworkflowtriggerrequirements/
+    
+    console.log("Trigger Requirements:");
+    console.log(JSON.stringify(requirements, null, 2));
+    // End retrieve trigger requirements
 
 
     const triggerInputs = {
@@ -161,14 +168,10 @@ app.get("/trigger", async (req, res) => {
 
     // ========================== TASK 2 ==========================
     // Call the Maestro triggerWorkflow API via the SDK
-    // client.maestro.workflows.triggerWorkflow
-
-
-
-
-
-
-
+    // SDK method: client.maestro.workflows.triggerWorkflow
+    // Step 5 of code example linked above
+    // API Ref: https://developers.docusign.com/docs/maestro-api/reference/maestro/workflows/triggerworkflow/
+    // Hint: pay close attention to the required fields for the request body
 
 
     //========================== TASK 2 end =========================
@@ -186,6 +189,7 @@ app.get("/trigger", async (req, res) => {
 
       // ========================== TASK 3 ==========================
       // Display the instanceUrl as a clickable link and embedded iframe
+      // Step 6 of the corresponding code example linked above
       .send(`
         <h2>Workflow Instance Triggered! Yay!</h2><pre>${JSON.stringify(result, null, 2)}</pre>
 
