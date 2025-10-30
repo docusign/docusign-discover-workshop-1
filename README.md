@@ -1,65 +1,27 @@
-Discover Workshop - Bank account opening
+# Discover Workshop — Bank Account Opening
 
-# Discover Workshop - Bank account opening
-
-This README describes how to build, run, and test the connected fields extension app used in the Discover workshop.
-
----
-
-## Table of contents
-
-- Overview
-- Prerequisites
-- Clone the repo
-- Add test data
-- Generate secret values
-- Configure environment & manifest
-- Install dependencies
-- Run the proxy server
-- Start ngrok (local tunnel)
-- Save forwarding address
-- Prepare and upload manifest
-- Console tests
-- Build Maestro workflow
-  - Web form template
-  - Envelope template
-  - Maestro workflow creation
-  - Testing the Maestro workflow
-- Trigger a workflow instance using the Maestro API
-- Complete code tasks
-- Start the trigger server
-
----
-
-## Overview
-
-This project demonstrates a Docusign extension app that verifies bank-account information and integrates with Maestro workflows (web forms + eSignature). Follow the steps below to run locally and validate the app.
+Building the Connected Fields extension app.
 
 ---
 
 ## Prerequisites
 
-- Docusign developer account (free): https://developers.docusign.com/
-- Node.js and npm installed
-- ngrok installed (or Docker Desktop to run ngrok in a container)
-- Optional: Docker Desktop if your environment blocks ngrok
+Before the workshop, ensure you have:
 
-A QR code (or link) to the repository is available in the workshop materials.
+- Docusign developer account (signup link: https://developers.docusign.com/)
+- Node.js and npm
+- ngrok (or Cloudflared as backup)
+- Optional: Docker Desktop (useful if ngrok is blocked)
 
----
-
-## 1) Clone the repository
-
-Run:
+## 1. Clone the repository
 
 ```bash
 git clone https://github.com/docusign/docusign-discover-workshop-1.git
-cd docusign-discover-workshop-1
 ```
 
 ---
 
-## 2) Add data
+## 2. Add sample data
 
 Add entries to `src/db/bankAccount.json`. Example entry:
 
@@ -79,33 +41,30 @@ Add as many entries as you like.
 
 ---
 
-## 3) Generate secret values
+## 3. Generate secret values
 
-Generate secure random values (you need four distinct values):
+Run this command **four** times and save each value:
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
 ```
 
-Save four generated strings for the next step.
+You will use these values in the next step.
 
 ---
 
-## 4) Set environment variables for the cloned repo
+## 4. Set environment variables
 
-1. Copy `example.development.env` to `development.env`.
-2. Replace these values in `development.env` with your generated values:
-   - `JWT_SECRET_KEY`
-   - `OAUTH_CLIENT_ID`
-   - `OAUTH_CLIENT_SECRET`
-   - `AUTHORIZATION_CODE`
-3. In `manifest.json`:
-   - Set `clientId` to the same value as `OAUTH_CLIENT_ID`.
-   - Set `clientSecret` to the same value as `OAUTH_CLIENT_SECRET`.
+- Copy `example.development.env` to `development.env`.
+- Replace the following values with your generated secrets:
+  - `JWT_SECRET_KEY`
+  - `OAUTH_CLIENT_ID`
+  - `OAUTH_CLIENT_SECRET`
+  - `AUTHORIZATION_CODE`
 
 ---
 
-## 5) Install dependencies
+## 5. Install dependencies
 
 ```bash
 npm install
@@ -113,101 +72,102 @@ npm install
 
 ---
 
-## 6) Run the proxy server
-
-Start the dev server:
+## 6. Run the proxy server
 
 ```bash
 npm run dev
 ```
 
-Default port is the one set in `development.env` (3000 by default).
-
-This creates a local server that rebuilds on changes.
+This starts a local server on the port defined in `development.env` (default: `3000`).
 
 ---
 
-## 7) Start ngrok
+## 7. Start ngrok (or Cloudflared)
 
-Create a publicly accessible tunnel to your localhost:
+Start ngrok to expose localhost:
 
 ```bash
-ngrok http <PORT>
+ngrok http 3000
 ```
 
-Replace `<PORT>` with the port from `development.env` (e.g., `3000`).
-
-If you need to run ngrok from a Docker container (replace `<YOUR_AUTH_TOKEN>`):
+If ngrok is blocked or assigns problematic `.dev` domains, you can run it via Docker:
 
 ```bash
 docker run -it -e NGROK_AUTHTOKEN=<YOUR_AUTH_TOKEN> ngrok/ngrok http host.docker.internal:3000
 ```
 
+Optional: Use Cloudflared (macOS/Homebrew example)
+
+Install Homebrew (if needed):
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install cloudflared:
+
+```bash
+brew install cloudflared
+```
+
+Start a Cloudflare Tunnel:
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+You can also download cloudflared from the official installation guide.
+
 ---
 
-## 8) Save the forwarding address
+## 8. Save the forwarding address
 
-From the ngrok output, copy the Forwarding address (https://...). You will use it in the manifest.
+Copy the forwarding address from ngrok/cloudflared output — you will use this in the manifest.
 
-Example ngrok output snippet:
+Example ngrok output excerpt (for reference):
 
 ```
 Session Status                online
-Account                       email@domain.com (Plan: Free)
-Version                       3.3.0
-Region                        United States (us)
-Web Interface                 http://127.0.0.1:4040
 Forwarding                    https://bbd7-12-202-171-35.ngrok-free.app -> http://localhost:3000
+Web Interface                 http://127.0.0.1:4040
 ```
 
-Save the https forwarding URL.
+---
+
+## 9. Prepare your app manifest
+
+In `manifest.json`:
+
+- Replace `<PROXY_BASE_URL>` with your ngrok/cloudflared forwarding address in:
+  - `connections.params.customConfig.tokenUrl`
+  - `connections.params.customConfig.authorizationUrl`
+  - `actions.params.uri` (for all actions)
+
+- Replace these client values with generated values from step 3:
+  - `clientId` → `OAUTH_CLIENT_ID` (development.env)
+  - `clientSecret` → `OAUTH_CLIENT_SECRET` (development.env)
+
+(lines referenced in the source manifest: clientId ~ line 23, clientSecret ~ line 24)
 
 ---
 
-## 9) Prepare your app manifest
+## 10. Upload your manifest and create the Bank Account Registration app
 
-In `manifest.json`, replace `<PROXY_BASE_URL>` with the ngrok forwarding address in these locations:
-
-- `connections.params.customConfig.tokenUrl`
-- `connections.params.customConfig.authorizationUrl`
-- `actions.params.uri`
-
-Replace for all actions.
+- Go to Docusign Developer Console → Create App → By editing the manifest.
+- Paste or upload `manifest.json` and select Validate → Create App.
 
 ---
 
-## 10) Upload your manifest and create the Bank Account Registration app
+## 11. Console tests
 
-1. Go to the Developer Console.
-2. Select "Create App" → "By editing the manifest".
-3. Paste or upload `manifest.json` in the manifest editor and click "Validate".
-4. Click "Create App" after validation.
+- Open the new app → App Testing → Install app.
+- Run the connection test (click Run Test → Visit site → consent).
+- Run `getTypeNames` (default request body).
+- Run `getTypeDefinitions` (default request body) — returns large declarations object.
 
----
+Verify extension tests — example request bodies and expected responses below.
 
-## 11) Console tests
-
-- For the connection test: click the "Click me to consent" button to grant consent.
-- Run `getTypeNames` (empty body `{}`) — expected response:
-
-```json
-{
-  "typeNames": [
-    {
-      "typeName": "BankAccountOpening",
-      "label": "Bank Account Opening"
-    }
-  ]
-}
-```
-
-- Run `getTypeDefinitions` with the provided request body — response should include the declarations object from `model.cto`.
-
-Verify extension tests — example request bodies and responses:
-
-1) Guaranteed success (record found)
-
-Request:
+Testing success (should verify):
 
 ```json
 {
@@ -231,9 +191,7 @@ Response:
 }
 ```
 
-2) Blocked account
-
-Request:
+Testing blocked account (should fail with blocked reason):
 
 ```json
 {
@@ -258,9 +216,7 @@ Response:
 }
 ```
 
-3) Guaranteed failure (no record)
-
-Request:
+Testing not-found (guaranteed failure):
 
 ```json
 {
@@ -287,147 +243,119 @@ Response:
 
 ---
 
-## Building the Maestro workflow
+# Building the Maestro workflow
 
-### Web Form Template Creation
+## Web Form Template (create in Docusign web forms)
 
-1. Go to: https://apps-d.docusign.com/send/forms
-2. Start → Web Forms → Create Web Form.
-3. Choose "Start from scratch" → Next.
-4. Name your web form (example: "Bank Account Details") → Apply.
-5. Customize the Welcome page (title, subtitle) as desired.
-6. Add fields (click + below title → Text Field) and set properties:
-
-- Email
-  - Field name: Email
-  - Required: enabled
-  - API reference name: `email`
-- Account Holder Name
-  - Field name: Account Holder Name
-  - Required: enabled
-  - API reference name: `accountHolderName`
-- Bank Name
-  - Field name: Bank Name
-  - Required: enabled
-  - API reference name: `bankName`
-- Account Number
-  - Field name: Account Number
-  - Required: enabled
-  - API reference name: `accountNumber`
-- Routing Number
-  - Field name: Routing Number
-  - Required: enabled
-  - API reference name: `routingNumber`
-
-7. Optionally update the Thank You page.
-8. Save and Activate the form. Set Access to "Public" and Activate.
+1. Go to: https://apps-d.docusign.com/send/forms  
+   Click Start → Web Forms → Create Web Form
+2. Choose “Start from scratch” → Next
+3. Name the web form (e.g., “Bank Account Details”) → Apply
+4. Configure pages and add fields. Add these Text Fields (required):
+   - Email (API reference name: `email`)
+   - Account Holder Name (API reference name: `accountHolderName`)
+   - Bank Name (API reference name: `bankName`)
+   - Account Number (API reference name: `accountNumber`)
+   - Routing Number (API reference name: `routingNumber`)
+5. Save → Activate. Set Access setting to “Public” → Activate.
 
 ---
 
-### Envelope Template Creation
+## Envelope Template
 
-1. Go to: https://apps-d.docusign.com/send/templates
-2. Start → Envelope Templates → Create a Template.
-3. Fill template info:
-   - Template Name: e.g., "Bank Draft Authorization"
-   - Description: optional
-4. Add document: upload `Bank Draft Authorization Form - DocuCo.pdf` (found in the repo).
-5. Add recipient role: e.g., "Account Holder" (leave name/email blank).
-6. Envelope Types → Select "Other" → input "Charge Authorization".
-7. Switch to "Custom Fields" → "App Fields" → expand your uploaded app (e.g., "Bank Account Opening").
-8. Drag the app fields (Account Holder Name, Account Number, Bank Name, Routing Number) onto the PDF. Size and place as required.
-9. For each field, enable "Must verify to sign" under Data Verification and set Data Label appropriately.
-10. Add standard fields: Signature and Date Signed.
-11. Save and Close; the template appears under "My Templates".
+1. Go to: https://apps-d.docusign.com/send/templates  
+   Start → Envelope Templates → Create a Template
+2. Fill Template Name (e.g., “New Account Registration”), add `Account Registration Form - DocuCo.pdf` from repository.
+3. Add a recipient role (e.g., “Account Holder” — leave name/email blank).
+4. Envelope Types → Select “Bank Account Opening Agreements”.
+5. In the Document Editor:
+   - Switch to “Custom Fields” → App Fields → expand your uploaded app (e.g., “Bank Account Opening”).
+   - Drag and place the app fields (Account Holder Name, Account Number, Bank Name, Routing Number) onto the PDF.
+   - For each field, enable “Must verify to sign” under Data Verification.
+   - Optionally rename Data Label to readable names (e.g., `accountNumber`).
+   - Add Signature and Date Signed standard fields.
+6. Save and Close → confirm template appears in “My Templates”.
 
 ---
 
-### Maestro Workflow Creation
+## Maestro Workflow Creation
 
-1. Go to: https://apps-d.docusign.com/send/workflows
-2. Click "Create Workflow" → "New Canvas" → Continue.
-3. Add workflow start:
-   - Start trigger: "From an API call" → Next.
-   - Skip variables (optional) → Next.
-   - Select "Human" for who starts the API call → Apply.
-4. Add step: "Collect Data with Web Forms" → Configure:
-   - Select the web form you created (e.g., "Bank Account Details").
-   - Add participant role "Account Holder".
-   - Map data fields: choose "Enter manually" and set the keys: `email`, `accountHolderName`, `bankName`, `accountNumber`, `routingNumber`.
-   - Apply.
-5. Add step: "Prepare eSignature Template" → Configure:
-   - Select the template you created (e.g., "Bank Draft Authorization").
-   - Map Template Field Mappings to the Web Forms fields (Account Holder Name → Account Holder Name, etc.).
-   - Apply.
-6. Add step: "Send Documents for Signature" → Configure:
-   - Choose document: "Prepare eSignature Template" → Prepared eSignature Template.
-   - Choose "Use a direct signing session".
-   - Map recipient fields using "Collect Data with Web Forms" (Account Holder Name, Email).
-   - Apply.
-7. Add step: "Show a Confirmation Screen" → Configure:
+1. Go to: https://apps-d.docusign.com/send/workflows → Create Workflow → New Canvas → Continue
+2. Add workflow start → “From an API call” → Next
+3. Add Text variables:
+   - `email`
+   - `accountHolderName`
+   - `bankName`
+   - `accountNumber`
+   - `routingNumber`
+   Click Next → choose “Human” for starter → Apply
+4. Add step: Collect Data with Web Forms
+   - Configure: select the web form (“Bank Account Details”)
+   - Add Participant → role: “Account Holder”
+   - Map workflow variables to form fields → Apply
+5. Add step: Prepare eSignature Template
+   - Configure: select the envelope template (“New Account Registration”)
+   - Map template fields to the Web Form values → Apply
+6. Add step: Send Documents for Signature
+   - Choose prepared template → Use a direct signing session
+   - Map recipient name/email to Web Form values (Account Holder name/email)
+   - Apply
+7. Add step: Show a Confirmation Screen
    - Participant: Account Holder
-   - Message type: Write Custom Message
-   - Message title: "Bank Draft Authorization Submitted"
-   - Message body: "Thank you for submitting the Bank Draft Authorization form. Please inform us if you want to withdraw this authorization in the future."
-   - Apply.
-8. Add step: "Add a Path End" → Finish flow graph.
-9. Click "Review & Publish":
-   - Workflow name: "Bank Draft Authorization Flow"
-   - Fix any validation errors if present.
-   - Click Publish (you may need to authorize application senders).
-   - After publishing, click "Go to Workflows".
+   - Message title: “Account Registration Submitted”
+   - Message body: “Thank you for submitting the Account Registration form. Please inform us if you want to withdraw this in the future.”
+   - Apply
+8. Add path end node → Review & Publish
+   - Set workflow name: “Account Registration Flow”
+   - Fix any validation errors, then Publish
+   - Authorize application senders if prompted
 
 ---
 
 ## Testing the Maestro Workflow
 
 1. Go to: https://apps-d.docusign.com/send/workflows
-2. Locate your published workflow and copy the workflow initiative URL (link icon).
-3. Paste the workflow URL into a fresh browser tab (or use "Run Workflow" from the menu).
-4. Flow begins with the web form. Fill with test data (use blocked account to see verification):
+2. Locate your published workflow → Run Workflow
+3. On “Start this flow manually” enter required fields and click Start
+4. A new tab opens the web form. Fill with test data (blocked example):
 
-Example blocked data:
-- Email: your email
+- Email: <your email>
 - Account Holder Name: Jane Smith
 - Bank Name: Chase Bank
 - Account Number: 9876543210
 - Routing Number: 222000111
 
-5. Proceed to Summary → Submit.
-6. A signing session will open. Click Continue, then Start → Fill In fields.
-7. If verification fails (e.g., "This account is blocked"), you cannot finish. Update the form with valid data to proceed.
+5. Submit the form → complete signing; you should see validation errors if using blocked data. Replace with valid data (example success):
 
-Example valid data:
 - Account Holder Name: John Doe
 - Bank Name: Bank of America
 - Account Number: 1234567890
 - Routing Number: 111000025
 
-8. Finish signing; you should be redirected to the confirmation screen if successful.
+6. Complete signing → confirm workflow success on the confirmation screen.
 
 ---
 
-## Trigger a workflow instance using the Maestro API
+# Trigger a workflow instance using the Maestro API
 
-### Create your integration key and configure settings
+## Create integration key and configure settings
 
-1. Go to: https://developers.docusign.com/ and log into your demo account.
-2. Top-right → profile picture → My Apps and Keys → Add App and Integration Key.
-3. Name your app → Save the Integration Key (client ID).
-4. Generate a secret key (Add Secret Key) → Save this secret.
-5. Under Additional settings → Redirect URIs, add:
-   - `http://localhost:4000`
-   - `http://localhost:4000/callback`
-6. Save.
-7. On the Apps and Keys page, copy and save:
+1. Go to Docusign Developer Center: https://developers.docusign.com/ → Log in
+2. Profile → My Apps and Keys → Add App and Integration Key
+3. Save:
+   - Integration Key
+   - Add Secret Key (save)
+4. Under Additional settings → Redirect URIs add:
+   - http://localhost:4000
+   - http://localhost:4000/callback
+   Save.
+
+5. Copy from Apps and Keys page:
    - User ID
    - API Account ID
-8. Select the Agreements tab → Maestro Workflows → find the published workflow → copy the Workflow ID from the URL.
+6. In Maestro Workflows (Agreements → Maestro Workflows) find your published workflow and copy the workflow ID from the URL.
 
-### Update local settings file
-
-1. Rename `example.settings.txt` to `settings.txt`.
-2. Replace values:
+7. Rename `example.settings.txt` to `settings.txt` and update values:
 
 ```
 DS_CLIENT_ID=YOUR_INTEGRATION_KEY
@@ -436,23 +364,26 @@ DS_ACCOUNT_ID=PASTE_YOUR_API_ACCOUNT_ID
 MAESTRO_WORKFLOW_ID=YOUR_WORKFLOW_ID
 ```
 
-Save the file.
-
 ---
 
 ## Complete the code tasks
 
-Open `server.js` and find the `/trigger` route. There are three tasks to implement:
+Open `server.js` and find the `/trigger` route. Three tasks:
 
 - TASK 1 — Get trigger requirements & set inputs
-- TASK 2 — Trigger the workflow via Maestro API
+- TASK 2 — Trigger the workflow
 - TASK 3 — Show the instance URL and embed it in an iframe
 
-Implement these tasks according to comments and the SDK/examples provided in the repo.
+Helpful resources:
+- Maestro code example (sample code for finding trigger requirements, triggering the workflow, and embedding)
+- API: getWorkflowTriggerRequirements
+- API: triggerWorkflow
+
+Hint: Pay attention to required fields for the request body.
 
 ---
 
-## Trigger the workflow (local test)
+## Trigger the workflow locally
 
 Start the trigger server:
 
@@ -460,8 +391,9 @@ Start the trigger server:
 npm run trigger
 ```
 
-Open: http://localhost:4000
+Open: http://localhost:4000  
+Click “Log into your Docusign developer account” → grant consent → you’ll be redirected back and see your Account ID and a Trigger button. Click “Trigger Workflow Instance” to display the instance URL and embedded iframe.
 
-1. Click "Log into your Docusign developer account" and grant consent.
-2. After redirect, you will see your Account ID and a "Trigger" button.
-3. Click "Trigger Workflow Instance". The instance URL should be displayed and embedded in an iframe.
+---
+
+Feel free to repeat tests, modify the forms/templates/workflow, and experiment with more sample data.
