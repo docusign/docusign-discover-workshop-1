@@ -20,8 +20,8 @@
             "type": "oauth2",
             "params": {
                 "provider": "CUSTOM",
-                "clientId": "<CLIENT_ID>",
-                "clientSecret": "<CLIENT_SECRET>",
+                "clientId": "0fdcd8f777f49a6d79c4ffab28284903cb2a05d77f7fee26df813e5fb7712e28da8e4cf739f2e24539c9d090e10d879bf26c90884bd6086d38d3b2fa95961f7e",
+                "clientSecret": "0fdcd8f777f49a6d79c4ffab28284903cb2a05d77f7fee26df813e5fb7712e28da8e4cf739f2e24539c9d090e10d879bf26c90884bd6086d38d3b2fa95961f7e",
                 "scopes": [],
                 "customConfig": {
                     "authorizationMethod": "header",
@@ -29,10 +29,10 @@
                         "prompt": "consent",
                         "access_type": "offline"
                     },
-                    "authorizationUrl": "<PROXY_BASE_URL>/api/oauth/authorize",
+                    "authorizationUrl": "https://51b9cd46977c.ngrok-free.app/api/oauth/authorize",
                     "requiredScopes": [],
                     "scopeSeparator": " ",
-                    "tokenUrl": "<PROXY_BASE_URL>/api/oauth/token",
+                    "tokenUrl": "https://51b9cd46977c.ngrok-free.app/api/oauth/token",
                     "refreshScopes": []
                 }
             }
@@ -62,7 +62,7 @@
             "template": "ConnectedFields.Version1.Verify",
             "connectionsReference": "authentication",
             "params": {
-                "uri": "<PROXY_BASE_URL>/api/connectedfields/verify"
+                "uri": "https://51b9cd46977c.ngrok-free.app/api/connectedfields/verify"
             }
         },
         {
@@ -71,7 +71,7 @@
             "template": "DataIO.Version6.GetTypeNames",
             "connectionsReference": "authentication",
             "params": {
-                "uri": "<PROXY_BASE_URL>/api/connectedfields/getTypeNames"
+                "uri": "https://51b9cd46977c.ngrok-free.app/api/connectedfields/getTypeNames"
             }
         },
         {
@@ -80,7 +80,7 @@
             "template": "DataIO.Version6.GetTypeDefinitions",
             "connectionsReference": "authentication",
             "params": {
-                "uri": "<PROXY_BASE_URL>/api/connectedfields/getTypeDefinitions"
+                "uri": "https://51b9cd46977c.ngrok-free.app/api/connectedfields/getTypeDefinitions"
             }
         }
     ],
