@@ -153,7 +153,8 @@ In `manifest.json`:
 
 ## 10. Upload your manifest and create the Bank Account Registration app
 
-- Go to Docusign Developer Console → Create App → By editing the manifest.
+- Go to Docusign Developer Console: https://devconsole.docusign.com/apps
+- Create App → By editing the manifest.
 - Paste or upload `manifest.json` and select Validate → Create App.
 
 ---
