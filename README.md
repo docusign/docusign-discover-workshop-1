@@ -1,6 +1,8 @@
-# Discover Workshop — Bank Account Opening
+# Automating extensible account workflows
 
-Building the Connected Fields extension app.
+This repository supports a technical walkthrough, originally presented at Docusign Discover25, that demonstrates how to automate an extensible account opening workflow using Docusign Maestro, Web Forms, eSignature templates, extension apps, and the Docusign APIs. It models a real-world use case and shows how these components work together, using both a completed solution and hands-on exercises for developers who want to explore the implementation in depth.
+
+[Account opening use case](https://developers.docusign.com/use-cases/account-opening/)
 
 ---
 
@@ -84,47 +86,44 @@ This starts a local server on the port defined in `development.env` (default: `3
 
 ## 7. Start ngrok (or Cloudflared)
 
-Start ngrok to expose localhost:
+### Option 1: Start ngrok to expose localhost:
 
 ```bash
 ngrok http 3000
 ```
 
-If ngrok is blocked or assigns problematic `.dev` domains, you can run it via Docker:
+### Option 2: If ngrok is blocked or assigns problematic `.dev` domains, you can run it via Docker:
 
 ```bash
 docker run -it -e NGROK_AUTHTOKEN=<YOUR_AUTH_TOKEN> ngrok/ngrok http host.docker.internal:3000
 ```
 
-Optional: Use Cloudflared (macOS/Homebrew example)
-
-Install Homebrew (if needed):
+### Option 3: On macOS/Homebrew, use Cloudflare to run the proxy server: 
+#### 1. Install Homebrew (if needed):
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Install cloudflared:
+#### 2. Install Cloudflare:
 
 ```bash
 brew install cloudflared
 ```
 
-Start a Cloudflare Tunnel:
+#### 3. Start a Cloudflare tunnel:
 
 ```bash
 cloudflared tunnel --url http://localhost:3000
 ```
 
-You can also download cloudflared from the official installation guide.
-
 ---
 
 ## 8. Save the forwarding address
 
-Copy the forwarding address from ngrok/cloudflared output — you will use this in the manifest.
+Copy the forwarding address from ngrok/Cloudflare output — you will use this in the manifest.
 
-Example ngrok output excerpt (for reference):
+Example ngrok output:
 
 ```
 Session Status                online
@@ -138,7 +137,7 @@ Web Interface                 http://127.0.0.1:4040
 
 In `manifest.json`:
 
-- Replace `<PROXY_BASE_URL>` with your ngrok/cloudflared forwarding address in:
+- Replace `<PROXY_BASE_URL>` with your ngrok/Cloudflare forwarding address in:
   - `connections.params.customConfig.tokenUrl`
   - `connections.params.customConfig.authorizationUrl`
   - `actions.params.uri` (for all actions)
@@ -166,7 +165,7 @@ In `manifest.json`:
 - Run `getTypeNames` (default request body).
 - Run `getTypeDefinitions` (default request body) — returns large declarations object.
 
-Verify extension tests — example request bodies and expected responses below.
+Verify extension tests — example request bodies and expected responses below can be found.
 
 Testing success (should verify):
 
