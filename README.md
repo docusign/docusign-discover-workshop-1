@@ -4,7 +4,8 @@ This repository supports a technical walkthrough, originally presented at Docusi
 
 [Account opening use case](https://developers.docusign.com/use-cases/account-opening/)
 
----
+## Video walkthrough
+[![Automating admin tasks](https://img.youtube.com/vi/zlqB22dtpDc/0.jpg)](https://www.youtube.com/watch?v=zlqB22dtpDc)
 
 ## Prerequisites
 
